@@ -1,13 +1,21 @@
 <script>
 import Login from './components/Login.vue';
+import Deposit from './components/Deposit.vue';
 import IconSupport from './components/icons/Icon.vue';
 import { getWallet } from './utils/near'
+import { socket as getSocket } from './socketio';
 
 const wallet = await getWallet();
+
+const socket = await getSocket;
+socket.on('call', data => {
+  console.log(data);
+})
 
 export default {
   components: {
     Login,
+    Deposit,
     IconSupport,
   },
   data() {
@@ -17,6 +25,12 @@ export default {
   },
   mounted() {
     this.loggedIn = wallet.isSignedIn();
+  },
+  methods: {
+    logout() {
+      wallet.signOut()
+      this.loggedIn = false;
+    }
   }
 }
 </script>
@@ -27,11 +41,17 @@ export default {
       <nav class="navbar navbar-expand-lg">
       <IconSupport class="logo" />
       <h5>Rocket RPC Dashboard</h5>
+
+      <button v-if="loggedIn" type="button" class="btn btn-secondary signout" @click="logout">Sign out</button>
       </nav>
     </div>
 
     <div class="row main">
-      <Login />
+      <Login class="login" v-if="!loggedIn" />
+
+      <div v-else>
+        <Deposit />
+      </div>
     </div>
   </div>
 </template>
@@ -41,9 +61,13 @@ header {
   line-height: 1.5;
 }
 
+.container {
+  width: 100%;
+}
+
 .logo {
   display: block;
-  margin: 0 auto 2rem;
+  margin-right: 20px;
   width: 60px;
   height: 60px;
 }
@@ -52,25 +76,16 @@ header {
   width: 1048px;
 }
 
-.main {
+.login {
   margin-top: 200px;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.signout {
+  margin-left: 500px;
 }
+
+.main {
+  margin-top: 100px;
+}
+
 </style>

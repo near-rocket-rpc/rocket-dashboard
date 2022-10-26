@@ -9,7 +9,7 @@ export default {
         async signIn() {
             console.log('request signin...');
             await wallet.requestSignIn({
-                contractId: 'foo.testnet',
+                contractId: 'token.rocket0.testnet',
             });
         }
     }
@@ -30,7 +30,7 @@ export default {
 
 <style scoped>
 .container {
-    margin-left: 400px;
+    margin-left: 200px;
 }
 
 .row {
