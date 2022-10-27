@@ -2,6 +2,7 @@
 import Login from './components/Login.vue';
 import Deposit from './components/Deposit.vue';
 import IconSupport from './components/icons/Icon.vue';
+import Chart from './components/Chart.vue';
 import { getWallet } from './utils/near'
 import { socket as getSocket } from './socketio';
 
@@ -16,6 +17,7 @@ export default {
   components: {
     Login,
     Deposit,
+    Chart,
     IconSupport,
   },
   data() {
@@ -51,6 +53,8 @@ export default {
 
       <div v-else>
         <Deposit />
+
+        <Chart />
       </div>
     </div>
   </div>

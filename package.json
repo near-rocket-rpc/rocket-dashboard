@@ -10,6 +10,7 @@
     "big.js": "^6.2.1",
     "bootstrap": "5.2.2",
     "buffer": "^6.0.3",
+    "chart.js": "^3.9.1",
     "near-api-js": "^1.1.0",
     "socket.io-client": "^4.5.3",
     "vue": "^3.2.41"
