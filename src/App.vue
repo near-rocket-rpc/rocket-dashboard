@@ -3,21 +3,27 @@ import Login from './components/Login.vue';
 import Deposit from './components/Deposit.vue';
 import IconSupport from './components/icons/Icon.vue';
 import Chart from './components/Chart.vue';
+import List from './components/List.vue';
+import Benchmark from './components/Benchmark.vue';
 import { getWallet } from './utils/near'
 import { socket as getSocket } from './socketio';
 
 const wallet = await getWallet();
 
 const socket = await getSocket;
-socket.on('call', data => {
-  console.log(data);
-})
+if (socket) {
+  socket.on('call', data => {
+    console.log(data);
+  });
+}
 
 export default {
   components: {
     Login,
     Deposit,
     Chart,
+    List,
+    Benchmark,
     IconSupport,
   },
   data() {
@@ -54,7 +60,11 @@ export default {
       <div v-else>
         <Deposit />
 
+        <Benchmark />
+
         <Chart />
+
+        <List />
       </div>
     </div>
   </div>

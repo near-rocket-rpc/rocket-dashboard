@@ -1,4 +1,5 @@
-import { keyStores, connect, Near, WalletConnection, } from 'near-api-js';
+import { keyStores, Near, WalletConnection, } from 'near-api-js';
+import { connect } from 'rocket-near-api-js';
 import { Buffer } from 'buffer';
 globalThis.Buffer = Buffer;
 
@@ -16,7 +17,7 @@ export async function getNear () {
   const connectionConfig = {
     networkId: "testnet",
     keyStore: keyStore, // first create a key store 
-    nodeUrl: "https://rpc.testnet.near.org",
+    nodeUrl: "http://43.132.251.223:3033",
     walletUrl: "https://wallet.testnet.near.org",
     helperUrl: "https://helper.testnet.near.org",
     explorerUrl: "https://explorer.testnet.near.org",
@@ -33,6 +34,6 @@ export async function getNear () {
 export async function getWallet () {
   if (wallet) return wallet;
   const near = await getNear();
-  wallet = new WalletConnection(near);
+  wallet = new WalletConnection(near, 'near_app');
   return wallet;
 }
