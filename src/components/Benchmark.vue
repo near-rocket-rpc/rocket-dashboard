@@ -17,21 +17,20 @@ const rocketToken = new Contract(
 export default {
     data() {
         return {
-            stop: false,
+            count: 0,
         }
     },
     methods: {
         async run() {
-            setTimeout(() => {
-                this.stop = true;
-            }, 5000);
+            this.count = 0;
 
-            while (!this.stop) {
+            while (this.count < 100) {
                 try {
                     rocketToken.ft_balance_of({
                         account_id: wallet.getAccountId()
                     });
                     rocketToken.ft_metadata();
+                    this.count += 2;
 
                     await new Promise((res, _) => {
                         setTimeout(res, 100);
@@ -46,7 +45,7 @@ export default {
 </script>
 
 <template>
-    <div>
+    <div class="container benchmark">
         <button
             type="button"
             class="btn btn-secondary" 
@@ -56,3 +55,9 @@ export default {
         </button>
     </div>
 </template>
+
+<style scoped>
+.benchmark {
+    margin-top: 22px;
+}
+</style>

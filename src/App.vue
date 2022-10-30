@@ -99,7 +99,7 @@ header {
 }
 
 .main {
-  margin-top: 100px;
+  margin-top: 60px;
 }
 
 </style>

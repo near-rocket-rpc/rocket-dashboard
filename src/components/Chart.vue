@@ -79,7 +79,7 @@ export default {
 
 <style scoped>
 .rate {
-  height: 600px;
+  height: 500px;
   width: 80%;
 
   margin-top: 50px;

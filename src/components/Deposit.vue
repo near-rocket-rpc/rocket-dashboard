@@ -27,9 +27,11 @@ export default {
         return {
             rpcBalance: 0,
             depositBalance: 0,
+            accountId: '',
         }
     },
     async mounted() {
+        this.accountId = wallet.getAccountId();
         this.rpcBalance = await rocketToken.ft_balance_of({
             account_id: wallet.getAccountId()
         });
@@ -70,6 +72,9 @@ export default {
 <template>
     <div class="container">
         <div class="row">
+            <h4>Welcome {{accountId}}</h4>
+        </div>
+        <div class="row">
             <div class="col">
                 <h6>Your deposited RPC token balance: {{formatBalance(depositBalance)}}</h6>
                 <h6>Your plan is: {{currentPlan()}}</h6>
@@ -77,9 +82,23 @@ export default {
 
             <div class="col">
                 <h6>RPC token balance in wallet: {{formatBalance(rpcBalance)}}</h6>
-                <button type="button" class="btn btn-outline-primary btn-sm" @click="deposit(parseAmount(1))">Deposit</button>
+                <button type="button" class="btn btn-outline-primary btn-sm" @click="deposit(parseAmount(100))">Deposit</button>
             </div>
         </div>
 
+        <hr class="rounded">
     </div>
 </template>
+
+<style scoped>
+h4 {
+    margin-bottom: 20px;
+}
+hr {
+    width: 770px;
+}
+hr.rounded {
+  border-top: 4px solid #bbb;
+  border-radius: 2px;
+}
+</style>
