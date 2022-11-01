@@ -32,14 +32,17 @@ export default {
     },
     async mounted() {
         this.accountId = wallet.getAccountId();
-        this.rpcBalance = await rocketToken.ft_balance_of({
-            account_id: wallet.getAccountId()
-        });
-        this.depositBalance = await escrowContract.get_balance({
-            account_id: wallet.getAccountId()
-        });
+        await this.updateBalance();
     },
     methods: {
+        async updateBalance() {
+            this.rpcBalance = await rocketToken.ft_balance_of({
+                account_id: wallet.getAccountId()
+            });
+            this.depositBalance = await escrowContract.get_balance({
+                account_id: wallet.getAccountId()
+            });
+        },
         formatBalance(b) {
             const bal = Big(b);
             return bal.div(1e18).toString();
@@ -82,7 +85,8 @@ export default {
 
             <div class="col">
                 <h6>RPC token balance in wallet: {{formatBalance(rpcBalance)}}</h6>
-                <button type="button" class="btn btn-outline-primary btn-sm" @click="deposit(parseAmount(100))">Deposit</button>
+                <button type="button" class="btn btn-outline-primary btn-sm" @click="updateBalance">Refresh</button>
+                <button type="button" class="btn btn-outline-primary btn-sm" @click="deposit(parseAmount(200))">Deposit</button>
             </div>
         </div>
 
@@ -100,5 +104,8 @@ hr {
 hr.rounded {
   border-top: 4px solid #bbb;
   border-radius: 2px;
+}
+.btn {
+    margin-right: 20px;
 }
 </style>
