@@ -9,7 +9,7 @@ const rocketToken = new Contract(
     'token.rocket0.testnet',
     {
         viewMethods: ['ft_balance_of'],
-        changeMethods: ['ft_transfer_call']
+        changeMethods: ['ft_transfer_call', 'mint']
     }
 );
 const escrowContract = new Contract(
@@ -28,9 +28,14 @@ export default {
             rpcBalance: 0,
             depositBalance: 0,
             accountId: '',
+            minting: false,
         }
     },
     async mounted() {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList]
+            .map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
         this.accountId = wallet.getAccountId();
         await this.updateBalance();
     },
@@ -67,6 +72,16 @@ export default {
                 '300000000000000',
                 '1'
             );
+        },
+        async mint() {
+            try {
+                this.minting = true;
+                await rocketToken.mint({});
+                await this.updateBalance();
+            } catch (err) {
+            } finally {
+                this.minting = false;
+            }
         }
     }
 }
@@ -85,8 +100,22 @@ export default {
 
             <div class="col">
                 <h6>RPC token balance in wallet: {{formatBalance(rpcBalance)}}</h6>
+                <button 
+                    type="button" 
+                    class="btn btn-outline-primary btn-sm" 
+                    @click="mint"
+                    :disabled="minting"
+                    data-bs-toggle="tooltip" data-bs-placement="bottom"
+                    data-bs-title="Mint 1000 RPC tokens into your account"
+                >{{minting ? 'Minting' : 'Mint'}}</button>
+                <button 
+                    type="button" 
+                    class="btn btn-outline-primary btn-sm" 
+                    @click="deposit(parseAmount(200))"
+                    data-bs-toggle="tooltip" data-bs-placement="bottom"
+                    data-bs-title="Deposit 200 RPC tokens into the escrow contract to pay for premium usage"
+                >Deposit</button>
                 <button type="button" class="btn btn-outline-primary btn-sm" @click="updateBalance">Refresh</button>
-                <button type="button" class="btn btn-outline-primary btn-sm" @click="deposit(parseAmount(200))">Deposit</button>
             </div>
         </div>
 
