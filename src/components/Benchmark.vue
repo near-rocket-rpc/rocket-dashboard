@@ -24,7 +24,7 @@ export default {
         async run() {
             this.count = 0;
 
-            while (this.count < 100) {
+            while (this.count < 50) {
                 try {
                     rocketToken.ft_balance_of({
                         account_id: wallet.getAccountId()

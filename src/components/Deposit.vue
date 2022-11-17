@@ -111,7 +111,7 @@ export default {
                 <button 
                     type="button" 
                     class="btn btn-outline-primary btn-sm" 
-                    @click="deposit(parseAmount(200))"
+                    @click="deposit(parseAmount(50))"
                     data-bs-toggle="tooltip" data-bs-placement="bottom"
                     data-bs-title="Deposit 200 RPC tokens into the escrow contract to pay for premium usage"
                 >Deposit</button>
