@@ -1,10 +1,23 @@
-import { keyStores, Near, WalletConnection, } from 'near-api-js';
-import { connect } from 'rocket-near-api-js';
 import { Buffer } from 'buffer';
+import { connect as nconnect, keyStores, Near, WalletConnection } from 'near-api-js';
+import { connect } from 'rocket-near-api-js';
 globalThis.Buffer = Buffer;
 
 let near;
 let wallet;
+let pending = false;
+
+export function loginPending () {
+  if (pending) return true;
+  const ls = localStorage;
+  for (const key of Object.keys(ls)) {
+    if (key.includes('keystore:pending_key')) {
+      pending = true;
+      return true;
+    }
+  }
+  return false;
+}
 
 /**
  * 
@@ -23,6 +36,12 @@ export async function getNear () {
     explorerUrl: "https://explorer.testnet.near.org",
   };
 
+  if (loginPending()) {
+      console.log('found pending key, will reload soon');
+      setTimeout(() => location.reload(), 1000);
+  }
+
+  await nconnect(connectionConfig);
   near = await connect(connectionConfig);
   return near;
 }

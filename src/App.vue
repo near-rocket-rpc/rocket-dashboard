@@ -5,7 +5,7 @@ import IconSupport from './components/icons/Icon.vue';
 import Chart from './components/Chart.vue';
 import List from './components/List.vue';
 import Benchmark from './components/Benchmark.vue';
-import { getWallet } from './utils/near'
+import { getWallet, loginPending } from './utils/near'
 import { socket as getSocket } from './socketio';
 
 const wallet = await getWallet();
@@ -38,6 +38,9 @@ export default {
     logout() {
       wallet.signOut()
       this.loggedIn = false;
+    },
+    alreadyLoggedIn() {
+      return !loginPending();
     }
   }
 }
@@ -54,7 +57,7 @@ export default {
       </nav>
     </div>
 
-    <div class="row main">
+    <div class="row main" v-if="alreadyLoggedIn()">
       <Login class="login" v-if="!loggedIn" />
 
       <div v-else>
@@ -66,6 +69,10 @@ export default {
 
         <List />
       </div>
+    </div>
+
+    <div class="row main" v-else>
+      <h5>Generating JWT Token, please wait...</h5>
     </div>
   </div>
 </template>

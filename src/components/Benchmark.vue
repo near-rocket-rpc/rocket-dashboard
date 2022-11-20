@@ -53,6 +53,7 @@ export default {
         >
         Benchmark
         </button>
+        (Send 50 concurrent RPC view calls to the server, each will cost 1 RPC token.)
     </div>
 </template>
 
